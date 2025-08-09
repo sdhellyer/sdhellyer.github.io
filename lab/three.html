@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Three.js — Lab</title>
+    <link rel="icon" href="/src/icon/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/site/style.css" />
+    <style> canvas{display:block;max-width:100%;border-radius:12px;border:1px solid var(--border);background:#000} </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav">
+        <a class="brand" href="/">sdhellyer</a>
+        <a href="/daily.html">Daily</a>
+        <a class="active" href="/lab/">Lab</a>
+        <button id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">🌓</button>
+      </nav>
+    </header>
+    <main class="container">
+      <h1>Three.js rotating cube</h1>
+      <p>No bundler — using an ES module CDN. This keeps the demo simple for GitHub Pages.</p>
+      <div id="stage"></div>
+    </main>
+    <script type="module" src="/site/main.js"></script>
+    <script type="module">
+      import * as THREE from 'https://unpkg.com/three@0.159.0/build/three.module.js';
+
+      const stage = document.getElementById('stage');
+      const width = Math.min(800, stage.clientWidth || 800);
+      const height = 480;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, width/height, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(width, height);
+      stage.appendChild(renderer.domElement);
+
+      const geometry = new THREE.BoxGeometry();
+      const material = new THREE.MeshStandardMaterial({ color: 0x6ea8fe });
+      const cube = new THREE.Mesh(geometry, material);
+      scene.add(cube);
+
+      const ambient = new THREE.AmbientLight(0xffffff, 0.8);
+      const dir = new THREE.DirectionalLight(0xffffff, 0.6);
+      dir.position.set(2,2,3);
+      scene.add(ambient, dir);
+
+      camera.position.z = 3;
+
+      function onResize(){
+        const w = Math.min(800, stage.clientWidth || 800);
+        const h = height;
+        renderer.setSize(w, h);
+        camera.aspect = w/h;
+        camera.updateProjectionMatrix();
+      }
+      window.addEventListener('resize', onResize);
+
+      function animate(){
+        requestAnimationFrame(animate);
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.013;
+        renderer.render(scene, camera);
+      }
+      animate();
+    </script>
+  </body>
+</html>

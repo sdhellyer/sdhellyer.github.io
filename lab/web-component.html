@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Web Component — Lab</title>
+    <link rel="icon" href="/src/icon/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/site/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav">
+        <a class="brand" href="/">sdhellyer</a>
+        <a href="/daily.html">Daily</a>
+        <a class="active" href="/lab/">Lab</a>
+        <button id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">🌓</button>
+      </nav>
+    </header>
+    <main class="container">
+      <h1>Web Component: <code>&lt;glow-card&gt;</code></h1>
+      <p>Simple custom element with shadow DOM, attribute reflection, and a slot.</p>
+      <glow-card accent="#6ea8fe">
+        <h2 slot="title">Hello</h2>
+        <p>Shadow DOM keeps styles isolated. Toggle theme to see it adapt.</p>
+      </glow-card>
+    </main>
+    <script type="module" src="/site/main.js"></script>
+    <script type="module">
+      class GlowCard extends HTMLElement {
+        static get observedAttributes(){ return ['accent']; }
+        constructor(){
+          super();
+          this.attachShadow({ mode: 'open' });
+          this.shadowRoot.innerHTML = `
+            <style>
+              :host{ display:block; border:1px solid var(--border); border-radius:16px; padding:16px; background:var(--card); color:var(--fg); }
+              .title{ font-weight:700; margin:0 0 8px; }
+              .wrap{ position:relative; }
+              .glow{ position:absolute; inset:-1px; border-radius:16px; pointer-events:none; filter:blur(18px); opacity:.5; background: var(--accent-glow); }
+            </style>
+            <div class="wrap">
+              <div class="glow"></div>
+              <slot name="title" class="title"></slot>
+              <slot></slot>
+            </div>
+          `;
+        }
+        attributeChangedCallback(){ this.updateAccent(); }
+        connectedCallback(){ this.updateAccent(); }
+        updateAccent(){
+          const accent = this.getAttribute('accent') || '#6ea8fe';
+          this.style.setProperty('--accent-glow', `${accent}33`);
+        }
+      }
+      customElements.define('glow-card', GlowCard);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Daily — SD Hellyer</title>
+    <meta name="description" content="Daily tools: todos, quick links, and notes." />
+    <link rel="icon" href="/src/icon/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/site/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav">
+        <a class="brand" href="/">sdhellyer</a>
+        <a class="active" href="/daily.html">Daily</a>
+        <a href="/lab/">Lab</a>
+        <button id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">🌓</button>
+      </nav>
+    </header>
+    <main class="container grid-2">
+      <section>
+        <h1>To‑dos</h1>
+        <form id="todo-form" class="row">
+          <input id="todo-input" type="text" placeholder="Add a task…" aria-label="Add a task" />
+          <button type="submit">Add</button>
+          <button id="todo-clear" type="button" class="secondary" title="Clear completed">Clear done</button>
+        </form>
+        <ul id="todo-list" class="card-list" aria-live="polite"></ul>
+      </section>
+
+      <section>
+        <h1>Quick links</h1>
+        <form id="link-form" class="row">
+          <input id="link-name" type="text" placeholder="Name" aria-label="Link name" />
+          <input id="link-url" type="url" placeholder="https://…" aria-label="Link URL" />
+          <button type="submit">Save</button>
+        </form>
+        <ul id="link-list" class="chip-list"></ul>
+      </section>
+
+      <section class="full">
+        <h1>Scratch notes</h1>
+        <textarea id="notes" rows="10" placeholder="Jot anything here…"></textarea>
+      </section>
+    </main>
+    <script type="module" src="/site/main.js"></script>
+    <script type="module" src="/site/daily.js"></script>
+  </body>
+</html>
