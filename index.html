@@ -23,6 +23,20 @@
         <p>This is my personal site hosted on GitHub Pages. I use it for quick daily tools and to try different web technologies.</p>
       </section>
 
+      <section id="bookmarks-section">
+        <div class="row" style="align-items:center; gap:12px; margin: 8px 0 6px;">
+          <h2 style="margin:0; flex:1 1 auto;">Bookmarks</h2>
+          <button id="bm-edit-toggle" class="secondary" title="Toggle edit mode">Edit</button>
+        </div>
+
+        <div id="bm-groups" class="group-list"></div>
+
+        <div id="bm-add-group" class="row hidden" style="margin-top:10px;">
+          <input id="bm-group-name" type="text" placeholder="New group name" aria-label="Group name" />
+          <button id="bm-add-group-btn" type="button">Add group</button>
+        </div>
+      </section>
+
       <section>
         <h2>Quick links</h2>
         <ul class="list">
@@ -42,5 +56,6 @@
       </section>
     </main>
     <script type="module" src="/site/main.js"></script>
+  <script type="module" src="/site/bookmarks.js"></script>
   </body>
   </html>
