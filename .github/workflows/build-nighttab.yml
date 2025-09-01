@@ -1,0 +1,48 @@
+name: Build NightTab to /start
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'start/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build web bundle
+        run: npm run build
+
+      - name: Copy build to /start
+        run: |
+          rm -rf start
+          mkdir -p start
+          cp -R dist/web/* start/
+          # Add a tiny index fallback if build unexpectedly empty
+          if [ ! -f start/index.html ]; then echo '<!doctype html><title>Start</title><p>Build produced no index.</p>' > start/index.html; fi
+
+      - name: Commit and push changes
+        run: |
+          if [ -n "$(git status --porcelain=start)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add start
+            git commit -m "chore(start): update NightTab web build [skip ci]"
+            git push
+          else
+            echo "No changes in /start to commit."
+          fi
